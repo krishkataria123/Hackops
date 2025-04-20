@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liked Events | College Societies Timeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reuse the same CSS variables and base styles from your main page */
+        :root {
+            --primary-green: #5DBB63;
+            --white: #ffffff;
+            --black: #000000;
+            --light-bg: #f5f5f5;
+            --card-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-green: #4ca952;
+            --white: #121212;
+            --black: #ffffff;
+            --light-bg: #1e1e1e;
+            --card-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 1rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
+            color: var(--white);
+            box-shadow: 0 10px 20px rgba(93, 187, 99, 0.2);
+            animation: headerEntrance 1s ease-out;
+        }
+
+        @keyframes headerEntrance {
+            0% { opacity: 0; transform: translateY(-50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: radial-gradient(var(--white) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        /* Liked Events Specific Styles */
+        .liked-events-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .liked-event-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-green);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liked-event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .liked-event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .liked-society-name {
+            font-weight: 600;
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+        }
+
+        .liked-society-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.8rem;
+            color: var(--white);
+        }
+
+        .liked-event-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--black);
+        }
+
+        .liked-event-description {
+            color: #555;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .liked-event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .liked-event-details {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .liked-event-detail {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .liked-event-detail i {
+            margin-right: 0.5rem;
+            color: var(--primary-green);
+        }
+
+        .remove-like-btn {
+            background: transparent;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-like-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .no-liked-events {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        .no-liked-events i {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Dark mode styles */
+        [data-theme="dark"] .liked-event-card {
+            background: #2a2a2a;
+        }
+
+        [data-theme="dark"] .liked-event-title {
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] .liked-event-description {
+            color: #b0b0b0;
+        }
+
+        [data-theme="dark"] .liked-event-footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .liked-events-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            header {
+                padding: 1.5rem 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-bg-pattern"></div>
+            <div class="header-content">
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </button>
+                <h1>Your Liked Events</h1>
+                <p class="subtitle">All the events you've shown interest in</p>
+                <a href="student.html" class="back-to-timeline-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Timeline
+                </a>
+            </div>
+        </header>
+
+        <div class="liked-events-container" id="likedEventsContainer">
+            <!-- Liked events will be dynamically inserted here -->
+            <div class="no-liked-events" id="noLikedEvents">
+                <i class="far fa-heart"></i>
+                <p>You haven't liked any events yet</p>
+                <p>Browse the timeline and click the heart icon to save events here</p>
+                <a href="student.html" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">
+                    Browse Events
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('span');
+
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+
+        // Update button icon and text based on current theme
+        function updateThemeButton(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Light Mode';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Dark Mode';
+            }
+        }
+
+        // Load and display liked events
+       // Load and display liked events
+document.addEventListener('DOMContentLoaded', function() {
+    const likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+    const container = document.getElementById('likedEventsContainer');
+    const noEventsMsg = document.getElementById('noLikedEvents');
+
+    if (likedEvents.length > 0) {
+        noEventsMsg.style.display = 'none';
+        
+        likedEvents.forEach(event => {
+            const eventCard = document.createElement('div');
+            eventCard.className = 'liked-event-card';
+            eventCard.innerHTML = `
+                <div class="liked-event-header">
+                    <div class="liked-society-name">
+                        <div class="liked-society-icon">
+                            <i class="${event.societyIcon || 'fas fa-calendar-alt'}"></i>
+                        </div>
+                        ${event.societyName || 'Unknown Society'}
+                    </div>
+                    <button class="remove-like-btn" data-event-id="${event.id}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <h3 class="liked-event-title">${event.title || 'Untitled Event'}</h3>
+                <p class="liked-event-description">${event.description || 'No description available'}</p>
+                <div class="liked-event-footer">
+                    <div class="liked-event-details">
+                        <div class="liked-event-detail">
+                            <i class="fas fa-clock"></i>
+                            ${event.time || 'Time not specified'}
+                        </div>
+                        <div class="liked-event-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${event.location || 'Location not specified'}
+                        </div>
+                    </div>
+                    <a href="event-details.html?id=${event.id}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                        View Details
+                    </a>
+                </div>
+            `;
+            container.appendChild(eventCard);
+        });
+
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-like-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const eventId = this.dataset.eventId;
+                let likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+                likedEvents = likedEvents.filter(e => e.id !== eventId);
+                localStorage.setItem('likedEvents', JSON.stringify(likedEvents));
+                
+                this.closest('.liked-event-card').remove();
+                
+                // Show no events message if all removed
+                if (document.querySelectorAll('.liked-event-card').length === 0) {
+                    noEventsMsg.style.display = 'block';
+                }
+            });
+        });
+    }
+});
+
+        function removeLikedEvent(eventId) {
+            let likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+            likedEvents = likedEvents.filter(id => id !== eventId);
+            localStorage.setItem('likedEvents', JSON.stringify(likedEvents));
+            
+            // Update the count on the main page if it exists
+            if (window.opener) {
+                window.opener.updateLikedEventsCount(likedEvents.length);
+            }
+        }
+
+        // Back button style
+        const backBtn = document.createElement('style');
+        backBtn.textContent = `
+            .back-to-timeline-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 1rem;
+                padding: 0.6rem 1.2rem;
+                background: rgba(255,255,255,0.2);
+                color: var(--white);
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            
+            .back-to-timeline-btn:hover {
+                background: rgba(255,255,255,0.3);
+                transform: translateY(-2px);
+            }
+            
+            .btn-primary {
+                background: var(--primary-green);
+                color: var(--white);
+                border: none;
+                padding: 0.6rem 1.5rem;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                display: inline-block;
+            }
+            
+            .btn-primary:hover {
+                background: var(--primary-green);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(93, 187, 99, 0.3);
+            }
+        `;
+        document.head.appendChild(backBtn);
+    </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventHub | Society Portal</title>  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+  font-family: 'Montserrat', sans-serif;
+  background: url(background.jpg) no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .header {
+      text-align: center;
+      padding: 60px 20px 100px;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header h1 {
+      font-size: 3.2rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: -60px auto 50px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(12px);
+    }
+
+    option {
+        color: rgb(0, 0, 0);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #eee;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #ccc;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      /* background: linear-gradient(to right, #1f3c88, #f3742f); mkhm */
+      background-color: rgba(0, 0, 0, 0.728);
+      
+      color:#ffffffc7;;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    #map {
+      width: 100%;
+      height: 300px;
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Unifesto</h1>
+    <p>Your Event Posting Space</p>
+  </div>
+
+  <div class="container">
+    <h2>Post a New Event</h2>
+    <form>
+      <label for="eventTitle">Event Title</label>
+      <input type="text" id="eventTitle" placeholder="Enter event title" required />
+
+      <label for="eventDesc">Description</label>
+      <textarea id="eventDesc" placeholder="Brief description" required></textarea>
+
+      <label for="eventCategory">Category</label>
+      <select id="eventCategory" required>
+        <option value="">Select Category</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Technical">Technical</option>
+        <option value="Workshop">Workshop</option>
+        <option value="Sports">Sports</option>
+      </select>
+
+      <label for="eventStartDate">Start Date</label>
+      <input type="date" id="eventStartDate" required />
+
+      <label for="eventStartTime">Start Time</label>
+      <input type="time" id="eventStartTime" required />
+
+      <label for="eventEndTime">End Time</label>
+      <input type="time" id="eventEndTime" required />
+
+      <label for="eventVenue">Venue</label>
+      <input type="text" id="eventVenue" placeholder="e.g., Main Auditorium" required />
+
+
+
+      <label for="eventImage">Event Poster URL</label>
+      <input type="url" id="eventImage" placeholder="https://example.com/image.jpg" />
+
+      <button type="submit">Post Event</button>
+    </form>
+  </div>
+
+  
+</body>
+</html>

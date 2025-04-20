@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Societies Events Timeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        :root {
+            --primary-green: #5DBB63;
+            --white: #ffffff;
+            --black: #000000;
+            --light-bg: #f5f5f5;
+            --card-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            --timeline-line: 4px solid var(--primary-green);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 1rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
+            color: var(--white);
+            box-shadow: 0 10px 20px rgba(93, 187, 99, 0.2);
+            animation: headerEntrance 1s ease-out;
+        }
+
+        @keyframes headerEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: radial-gradient(var(--white) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo {
+            height: 100px;
+            width: auto;
+            margin-right: 1rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .search-filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1.2rem 0.8rem 3rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            color: var(--black);
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(93, 187, 99, 0.3);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--black);
+        }
+
+        .filter-dropdown {
+            position: relative;
+            max-width: 200px;
+            width: 100%;
+        }
+
+        .filter-dropdown select {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            color: var(--black);
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .filter-dropdown select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(93, 187, 99, 0.3);
+        }
+
+        .filter-dropdown i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--black);
+            pointer-events: none;
+        }
+
+        .date-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .calendar-input {
+            position: relative;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .calendar-input input {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            color: var(--black);
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-input input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(93, 187, 99, 0.3);
+        }
+
+        .calendar-input i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--black);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: var(--timeline-line);
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-green), var(--primary-green));
+            z-index: 1;
+            border-radius: 10px;
+        }
+
+        .timeline-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .time-marker {
+            width: 100%;
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .time-marker h2 {
+            display: inline-block;
+            background: var(--white);
+            padding: 0.6rem 2rem;
+            border-radius: 50px;
+            box-shadow: var(--card-shadow);
+            color: var(--primary-green);
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 3;
+            font-weight: 600;
+            border: 2px solid var(--primary-green);
+        }
+
+        .time-marker::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, rgba(93, 187, 99, 0.2), var(--primary-green), rgba(93, 187, 99, 0.2));
+            z-index: 1;
+        }
+
+        .event-card {
+            width: calc(50% - 2rem);
+            margin: 1rem;
+            padding: 1.8rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(20px);
+            border-top: 4px solid var(--primary-green);
+            overflow: hidden;
+        }
+
+        .event-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(93, 187, 99, 0.1), rgba(255, 255, 255, 0.1));
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .event-card:hover::after {
+            opacity: 1;
+        }
+
+        .event-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .event-card.left {
+            margin-right: auto;
+            animation: slideInLeft 0.6s ease-out forwards;
+        }
+
+        .event-card.right {
+            margin-left: auto;
+            animation: slideInRight 0.6s ease-out forwards;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-green);
+            border: 4px solid var(--white);
+            z-index: 3;
+            box-shadow: 0 0 0 2px var(--primary-green);
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover::before {
+            transform: scale(1.2);
+            background: var(--primary-green);
+        }
+
+        .event-card.left::before {
+            right: -38px;
+        }
+
+        .event-card.right::before {
+            left: -38px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .society-name {
+            font-weight: 600;
+            color: var(--primary-green);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .society-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.8rem;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover .society-icon {
+            transform: rotate(15deg) scale(1.1);
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
+        }
+
+        .event-time {
+            background: rgba(93, 187, 99, 0.1);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-green);
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover .event-time {
+            background: rgba(93, 187, 99, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--black);
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover .event-title {
+            color: var(--primary-green);
+        }
+
+        .event-description {
+            color: #555;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 2;
+            line-height: 1.7;
+        }
+
+        .event-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--black);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            color: var(--primary-green);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover .event-location {
+            color: var(--primary-green);
+        }
+
+        .event-location i {
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover .event-location i {
+            transform: scale(1.2);
+        }
+
+        .register-btn {
+            background: linear-gradient(to right, var(--primary-green), var(--primary-green));
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(93, 187, 99, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-green), var(--primary-green));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(93, 187, 99, 0.4);
+        }
+
+        .register-btn:hover::after {
+            opacity: 1;
+        }
+
+        .register-btn span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 1.1rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 31px;
+            }
+
+            .event-card {
+                width: 100%;
+                margin-left: 4rem;
+            }
+
+            .event-card.left, .event-card.right {
+                margin-right: auto;
+                margin-left: 4rem;
+                animation: slideInRight 0.6s ease-out forwards;
+            }
+
+            .event-card.left::before, .event-card.right::before {
+                left: -38px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .search-filter-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-box, .filter-dropdown, .calendar-input {
+                max-width: 100%;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--primary-green);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .modal-society {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-society-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--white);
+        }
+
+        .modal-society-name {
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        .modal-details {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-detail {
+            display: flex;
+            align-items: center;
+        }
+
+        .modal-detail i {
+            margin-right: 0.5rem;
+            color: var(--primary-green);
+        }
+
+        .modal-description {
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 200px;
+            background: #eee;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            border: 2px solid #ddd;
+            color: #666;
+        }
+
+        .modal-btn-secondary:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(to right, var(--primary-green), var(--primary-green));
+            color: var(--white);
+            border: none;
+            box-shadow: 0 4px 10px rgba(93, 187, 99, 0.3);
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(93, 187, 99, 0.4);
+        }
+        /* Theme Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+}
+
+/* Dark Mode Variables */
+:root {
+    --primary-green: #4ca952;
+    --white: #ffffff;
+    --black: #000000;
+    --light-bg: #f5f5f5;
+    --card-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    --timeline-line: 4px solid var(--primary-green);
+}
+
+[data-theme="dark"] {
+    --white: #121212;
+    --black: #ffffff;
+    --light-bg: #1e1e1e;
+    --card-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .search-box input {
+    background: rgba(0,0,0,0.3);
+    color: #ffffff; /* This makes the text white */
+}
+
+[data-theme="dark"] .search-box input::placeholder {
+    color: rgba(255,255,255,0.7); /* This makes the placeholder text slightly transparent white */
+}
+/* Dark Mode Specific Styles */
+[data-theme="dark"] body {
+    background-color: var(--light-bg);
+    color: var(--black);
+}
+
+[data-theme="dark"] .event-card {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .event-description {
+    color: #b0b0b0;
+}
+
+[data-theme="dark"] .event-footer {
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .modal-content {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .modal-description {
+    color: #b0b0b0;
+}
+
+[data-theme="dark"] .modal-btn-secondary {
+    border: 2px solid #444;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .modal-btn-secondary:hover {
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+}
+
+[data-theme="dark"] .search-box input,
+[data-theme="dark"] .filter-dropdown select,
+[data-theme="dark"] .calendar-input input {
+    background: rgba(0,0,0,0.3);
+    color: var(--black);
+}
+
+[data-theme="dark"] .search-box i,
+[data-theme="dark"] .filter-dropdown i,
+[data-theme="dark"] .calendar-input i {
+    color: var(--black);
+}
+
+[data-theme="dark"] .time-marker h2 {
+    background: #2a2a2a;
+    color: var(--primary-green);
+    border: 2px solid var(--primary-green);
+}
+
+[data-theme="dark"] .time-marker::before {
+    background: linear-gradient(to right, rgba(93, 187, 99, 0.1), var(--primary-green), rgba(93, 187, 99, 0.1));
+}
+.event-timer {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    color: #666;
+    margin-right: auto;
+    margin-left: 1rem;
+}
+
+[data-theme="dark"] .event-timer {
+    color: #b0b0b0;
+}
+
+.event-timer i {
+    margin-right: 0.3rem;
+    color: var(--primary-green);
+}
+
+.event-timer span {
+    font-weight: 600;
+    color: var(--primary-green);
+}
+
+.event-card:hover .event-timer span {
+    color: var(--primary-green);
+}
+/* Container for both buttons */
+.header-buttons-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 10;
+}
+
+/* Added Events Button */
+.added-events-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+/* Hover Effects */
+.added-events-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] .added-events-btn {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .added-events-btn:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Notification Badge */
+.event-count-badge {
+  background: var(--primary-green);
+  color: white;
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  margin-left: 4px;
+  padding: 0 4px;
+}
+/* Liked Events Button */
+.liked-events-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.liked-events-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .liked-events-btn {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .liked-events-btn:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+    </style>
+</head>
+<body>
+  
+    <div class="container">
+        <header>
+            <div class="header-bg-pattern"></div>
+            <div class="header-content">
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </button>
+                <div class="logo-container">
+                    
+                    <h1>College Societies Timeline</h1>
+                </div>
+                
+                <p class="subtitle">Discover and join exciting events across campus</p>
+                <a href="added-events.html" class="added-events-btn">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>My Events</span>
+                </a>
+                <a href="liked-events.html" class="liked-events-btn">
+                    <i class="fas fa-heart"></i>
+                    <span>Liked Events</span>
+                    <span class="event-count-badge" id="likedEventsCount">0</span>
+                  </a>
+                <div class="search-filter-container">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search events...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
+                    <div class="filter-dropdown">
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="academic">Academic</option>
+                            <option value="arts">Arts & Culture</option>
+                            <option value="sports">Sports</option>
+                            <option value="social">Social</option>
+                            <option value="technology">Technology</option>
+                        </select>
+                        <i class="fas fa-filter"></i>
+                    </div>
+                </div>
+                
+                <div class="date-selector">
+                    <div class="calendar-input">
+                        <input type="text" id="datePicker" placeholder="Select a date">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                
+            </div>
+        </header>
+
+        <!-- Day View Timeline -->
+        <div class="timeline" id="dayView">
+            <div class="timeline-container">
+                <div class="time-marker">
+                    <h2>Morning</h2>
+                </div>
+
+                <div class="event-card left visible" data-category="technology">
+                    <div class="card-header">
+                        <div class="society-name">
+                            <div class="society-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            Owasp
+                        </div>
+                        <span class="event-time">9:00 AM - 11:00 AM</span>
+                    </div>
+                    <h3 class="event-title">Hackowasp</h3>
+                    
+                    <span class="event-category">Technology</span>
+                    <p class="event-description">Learn the fundamentals of artificial intelligence and machine learning with hands-on projects. Perfect for beginners! No prior experience required.</p>
+                    <div class="event-footer">
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Tech Building, Room 205
+                        </div>
+                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                            <i class="fas fa-clock"></i>
+                            <span class="timer-days">00</span>d 
+                            <span class="timer-hours">00</span>h 
+                            <span class="timer-minutes">00</span>m 
+                            <span class="timer-seconds">00</span>s&nbsp;
+                        </div>
+                        
+                        <button class="register-btn" data-href="event-details.html" data-event="ai-workshop"><span>Register</span></button>
+                    </div>
+                </div>
+
+                <div class="event-card right visible" data-category="arts">
+                    <div class="card-header">
+                        <div class="society-name">
+                            <div class="society-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            Art Society
+                        </div>
+                        <span class="event-time">10:30 AM - 12:30 PM</span>
+                    </div>
+                    <h3 class="event-title">Watercolor Techniques</h3>
+                    <span class="event-category">Arts & Culture</span>
+                    <p class="event-description">Master the art of watercolor painting with our expert-led workshop. All materials provided. Learn blending, washes, and special effects.</p>
+                    <div class="event-footer">
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Arts Center, Studio 3
+                        </div>
+                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                            <i class="fas fa-clock"></i>
+                            <span class="timer-days">00</span>d 
+                            <span class="timer-hours">00</span>h 
+                            <span class="timer-minutes">00</span>m 
+                            <span class="timer-seconds">00</span>s
+                        </div>
+                        <button class="register-btn" data-event="watercolor"><span>Register</span></button>
+                    </div>
+                </div>
+
+                <div class="time-marker">
+                    <h2>Afternoon</h2>
+                </div>
+
+                <div class="event-card left visible" data-category="social">
+                    <div class="card-header">
+                        <div class="society-name">
+                            <div class="society-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            Culinary Club
+                        </div>
+                        <span class="event-time">1:00 PM - 3:00 PM</span>
+                    </div>
+                    <h3 class="event-title">Italian Cooking Class</h3>
+                    <span class="event-category">Social</span>
+                    <p class="event-description">Learn to make authentic pasta and tiramisu from scratch. Limited spots available! You'll get to eat what you make.</p>
+                    <div class="event-footer">
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Campus Kitchen
+                        </div>
+                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                            <i class="fas fa-clock"></i>
+                            <span class="timer-days">00</span>d 
+                            <span class="timer-hours">00</span>h 
+                            <span class="timer-minutes">00</span>m 
+                            <span class="timer-seconds">00</span>s
+                        </div>
+                        <button class="register-btn" data-event="cooking"><span>Register</span></button>
+                    </div>
+                </div>
+
+                <div class="event-card right visible" data-category="sports">
+                    <div class="card-header">
+                        <div class="society-name">
+                            <div class="society-icon">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            Sports Society
+                        </div>
+                        <span class="event-time">2:00 PM - 4:00 PM</span>
+                    </div>
+                    <h3 class="event-title">Intramural Basketball</h3>
+                    <span class="event-category">Sports</span>
+                    <p class="event-description">Friendly basketball tournament open to all skill levels. Teams will be formed on-site. Prizes for winning team!</p>
+                    <div class="event-footer">
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Main Gymnasium
+                        </div>
+                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                            <i class="fas fa-clock"></i>
+                            <span class="timer-days">00</span>d 
+                            <span class="timer-hours">00</span>h 
+                            <span class="timer-minutes">00</span>m 
+                            <span class="timer-seconds">00</span>s
+                        </div>
+                        <button class="register-btn" data-event="basketball"><span>Register</span></button>
+                    </div>
+                </div>
+
+                <div class="time-marker">
+                    <h2>Evening</h2>
+                </div>
+
+                <div class="event-card left visible" data-category="academic">
+                    <div class="card-header">
+                        <div class="society-name">
+                            <div class="society-icon">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            Debate Club
+                        </div>
+                        <span class="event-time">5:00 PM - 7:00 PM</span>
+                    </div>
+                    <h3 class="event-title">Open Debate Night</h3>
+                    <span class="event-category">Academic</span>
+                    <p class="event-description">Topic: "Social media has done more harm than good to society." All perspectives welcome! Come to debate or just listen.</p>
+                    <div class="event-footer">
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Student Union, Room 101
+                        </div>
+                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                            <i class="fas fa-clock"></i>
+                            <span class="timer-days">00</span>d 
+                            <span class="timer-hours">00</span>h 
+                            <span class="timer-minutes">00</span>m 
+                            <span class="timer-seconds">00</span>s
+                        </div>
+                        <button class="register-btn" data-event="debate"><span>Register</span></button>
+                    </div>
+                </div>
+
+                <div class="event-card right visible" data-category="arts">
+                    <div class="card-header">
+                        <div class="society-name">
+                            <div class="society-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            Music Society
+                        </div>
+                        <span class="event-time">7:30 PM - 9:30 PM</span>
+                    </div>
+                    <h3 class="event-title">Acoustic Night</h3>
+                    <span class="event-category">Arts & Culture</span>
+                    <p class="event-description">An evening of live acoustic performances by student musicians. Sign up to perform or just enjoy the show! Food and drinks available.</p>
+                    <div class="event-footer">
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Quad Amphitheater
+                        </div>
+                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                            <i class="fas fa-clock"></i>
+                            <span class="timer-days">00</span>d 
+                            <span class="timer-hours">00</span>h 
+                            <span class="timer-minutes">00</span>m 
+                            <span class="timer-seconds">00</span>s
+                        </div>
+                        <button class="register-btn" data-event="acoustic"><span>Register</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 class="modal-title" id="modalTitle">Event Title</h2>
+            
+            <div class="modal-society">
+                <div class="modal-society-icon" id="modalSocietyIcon">
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <div class="modal-society-name" id="modalSocietyName">Society Name</div>
+            </div>
+            
+            <div class="modal-image" id="modalImage"></div>
+            
+            <div class="modal-details">
+                <div class="modal-detail">
+                    <i class="fas fa-clock"></i>
+                    <span id="modalTime">Time</span>
+                </div>
+                <div class="modal-detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="modalLocation">Location</span>
+                </div>
+                <div class="modal-detail">
+                    <i class="fas fa-tag"></i>
+                    <span id="modalCategory">Category</span>
+                </div>
+            </div>
+            
+            <div class="modal-description" id="modalDescription">
+                Event description goes here with all the details about what participants can expect.
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary">Add to Calendar</button>
+                <button class="modal-btn modal-btn-primary">Register Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Liked Events Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize liked events from localStorage
+  const likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+  updateLikedEventsCount(likedEvents.length);
+  
+  // If you have like buttons on event cards, add click handlers
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const eventId = this.dataset.eventId;
+      let likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+      
+      if (this.classList.contains('liked')) {
+        // Unlike
+        likedEvents = likedEvents.filter(id => id !== eventId);
+        this.classList.remove('liked');
+      } else {
+        // Like
+        likedEvents.push(eventId);
+        this.classList.add('liked');
+      }
+      
+      localStorage.setItem('likedEvents', JSON.stringify(likedEvents));
+      updateLikedEventsCount(likedEvents.length);
+    });
+  });
+});
+
+function updateLikedEventsCount(count) {
+  const counter = document.getElementById('likedEventsCount');
+  if (counter) {
+    counter.textContent = count;
+    counter.style.display = count > 0 ? 'flex' : 'none';
+  }
+}
+        // Timer functionality for events
+function updateTimers() {
+    const now = new Date();
+    const timers = document.querySelectorAll('.event-timer');
+    
+    timers.forEach(timer => {
+        const eventTime = new Date(timer.dataset.eventTime);
+        const diff = eventTime - now;
+        
+        if (diff <= 0) {
+            timer.innerHTML = '<i class="fas fa-calendar-check"></i> Event started!';
+            return;
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        timer.querySelector('.timer-days').textContent = days.toString().padStart(2, '0');
+        timer.querySelector('.timer-hours').textContent = hours.toString().padStart(2, '0');
+        timer.querySelector('.timer-minutes').textContent = minutes.toString().padStart(2, '0');
+        timer.querySelector('.timer-seconds').textContent = seconds.toString().padStart(2, '0');
+    });
+}
+
+// Initialize timers and update every second
+updateTimers();
+setInterval(updateTimers, 1000);
+      // Dark Mode Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = themeToggle.querySelector('i');
+const themeText = themeToggle.querySelector('span');
+
+// Check for saved theme preference or use preferred color scheme
+const savedTheme = localStorage.getItem('theme') || 
+                   (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeButton(savedTheme);
+
+// Toggle theme on button click
+themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeButton(newTheme);
+});
+
+// Update button icon and text based on current theme
+function updateThemeButton(theme) {
+    if (theme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = 'Light Mode';
+    } else {
+        themeIcon.className = 'fas fa-moon';
+        themeText.textContent = 'Dark Mode';
+    }
+}
+        // Initialize date picker
+        flatpickr("#datePicker", {
+            dateFormat: "Y-m-d",
+            defaultDate: "today",
+            onChange: function(selectedDates, dateStr, instance) {
+                // Handle date change
+                console.log("Selected date:", dateStr);
+            }
+        });
+
+        // Make calendar open when clicking on the input
+        document.querySelector('.calendar-input').addEventListener('click', function() {
+            document.getElementById('datePicker')._flatpickr.open();
+        });
+
+        // Event modal functionality
+const registerButtons = document.querySelectorAll('.register-btn');
+const modal = document.getElementById('eventModal');
+const modalClose = document.getElementById('modalClose');
+
+registerButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        // Check if this button has a data-href attribute
+        if (this.hasAttribute('data-href')) {
+            // Redirect to the specified HTML file
+            window.location.href = this.getAttribute('data-href');
+            return; // Exit the function early
+        }
+        
+        // Original modal code for other buttons
+        const eventCard = this.closest('.event-card');
+        const eventTitle = eventCard.querySelector('.event-title').textContent;
+        const societyName = eventCard.querySelector('.society-name').textContent.trim();
+        const societyIcon = eventCard.querySelector('.society-icon i').className;
+        const eventTime = eventCard.querySelector('.event-time').textContent;
+        const eventLocation = eventCard.querySelector('.event-location').textContent.trim();
+        const eventCategory = eventCard.querySelector('.event-category').textContent;
+        const eventDescription = eventCard.querySelector('.event-description').textContent;
+
+        // Set modal content
+        document.getElementById('modalTitle').textContent = eventTitle;
+        document.getElementById('modalSocietyName').textContent = societyName;
+        document.getElementById('modalSocietyIcon').innerHTML = `<i class="${societyIcon}"></i>`;
+        document.getElementById('modalTime').textContent = eventTime;
+        document.getElementById('modalLocation').textContent = eventLocation;
+        document.getElementById('modalCategory').textContent = eventCategory;
+        document.getElementById('modalDescription').textContent = eventDescription;
+
+        // Show modal
+        modal.classList.add('active');
+    });
+});
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Filter functionality
+        const categoryFilter = document.getElementById('categoryFilter');
+        const eventCards = document.querySelectorAll('.event-card');
+
+        categoryFilter.addEventListener('change', function() {
+            const selectedCategory = this.value;
+            
+            eventCards.forEach(card => {
+                if (selectedCategory === 'all' || card.dataset.category === selectedCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent.toLowerCase();
+                const description = card.querySelector('.event-description').textContent.toLowerCase();
+                const society = card.querySelector('.society-name').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm) || society.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Animate event cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.event-card').forEach(card => {
+            observer.observe(card);
+        });
+        
+    </script>
+</body>

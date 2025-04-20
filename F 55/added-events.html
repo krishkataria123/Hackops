@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Events</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-green: #5DBB63;
+      --white: #ffffff;
+      --black: #000000;
+      --light-bg: #f5f5f5;
+      --card-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    [data-theme="dark"] {
+      --primary-green: #4ca952;
+      --white: #121212;
+      --black: #ffffff;
+      --light-bg: #1e1e1e;
+      --card-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--black);
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(93, 187, 99, 0.2);
+      border: none;
+      color: var(--black);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(93, 187, 99, 0.3);
+      transform: translateY(-2px);
+    }
+
+    [data-theme="dark"] .theme-toggle {
+      background: rgba(93, 187, 99, 0.1);
+      color: var(--black);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      color: var(--primary-green);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #4ca952;
+      transform: translateX(-3px);
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary-green);
+    }
+
+    .events-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .event-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      border-top: 4px solid var(--primary-green);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .event-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .event-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: #e74c3c;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .event-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .event-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .event-detail i {
+      color: var(--primary-green);
+      width: 20px;
+      text-align: center;
+    }
+
+    .no-events {
+      text-align: center;
+      padding: 3rem;
+      color: #777;
+      font-size: 1.1rem;
+      grid-column: 1 / -1;
+    }
+
+    [data-theme="dark"] .no-events {
+      color: #b0b0b0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .events-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="themeToggle" class="theme-toggle">
+    <i class="fas fa-moon"></i>
+    <span>Dark Mode</span>
+  </button>
+
+  <div class="container">
+    <a class="back-link" href="student.html">
+      <i class="fas fa-arrow-left"></i>
+      Back to Events
+    </a>
+    
+    <div class="page-header">
+      <h1 class="page-title">My Saved Events</h1>
+    </div>
+
+    <div class="events-container" id="eventsContainer">
+      <!-- Events will be dynamically inserted here -->
+      <div class="no-events" id="noEventsMessage">
+        <i class="fas fa-calendar-times" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+        <p>You haven't saved any events yet.</p>
+        <p>Add events to your calendar to see them here.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dark Mode Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const themeText = themeToggle.querySelector('span');
+
+    // Check for saved theme preference or use preferred color scheme
+    const savedTheme = localStorage.getItem('theme') || 
+                     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeButton(savedTheme);
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeButton(newTheme);
+    });
+
+    // Update button icon and text based on current theme
+    function updateThemeButton(theme) {
+      if (theme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = 'Light Mode';
+      } else {
+        themeIcon.className = 'fas fa-moon';
+        themeText.textContent = 'Dark Mode';
+      }
+    }
+
+    // Event Management System
+    document.addEventListener('DOMContentLoaded', function() {
+      const eventsContainer = document.getElementById('eventsContainer');
+      const noEventsMessage = document.getElementById('noEventsMessage');
+      
+      // Load saved events from localStorage
+      let savedEvents = JSON.parse(localStorage.getItem('savedEvents')) || [];
+      
+      // Display saved events
+      renderEvents(savedEvents);
+      
+      function renderEvents(events) {
+        eventsContainer.innerHTML = '';
+        
+        if (events.length === 0) {
+          noEventsMessage.style.display = 'block';
+          return;
+        }
+        
+        noEventsMessage.style.display = 'none';
+        
+        events.forEach((event, index) => {
+          const eventCard = document.createElement('div');
+          eventCard.className = 'event-card';
+          eventCard.innerHTML = `
+            <div class="event-header">
+              <h3 class="event-title">${event.title}</h3>
+              <button class="remove-btn" data-index="${index}">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+            <div class="event-details">
+              <div class="event-detail">
+                <i class="fas fa-calendar-day"></i>
+                <span>${event.date}</span>
+              </div>
+              <div class="event-detail">
+                <i class="fas fa-clock"></i>
+                <span>${event.time}</span>
+              </div>
+              <div class="event-detail">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${event.location}</span>
+              </div>
+            </div>
+          `;
+          
+          eventsContainer.appendChild(eventCard);
+        });
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            removeEvent(index);
+          });
+        });
+      }
+      
+      function removeEvent(index) {
+        savedEvents = JSON.parse(localStorage.getItem('savedEvents')) || [];
+        savedEvents.splice(index, 1);
+        localStorage.setItem('savedEvents', JSON.stringify(savedEvents));
+        renderEvents(savedEvents);
+        
+        // Show notification
+        showNotification('Event removed from your calendar');
+      }
+      
+      // Simple notification function (you can use the more advanced one from previous example)
+      function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--white)';
+        notification.style.color = 'var(--black)';
+        notification.style.padding = '15px 20px';
+        notification.style.borderRadius = '8px';
+        notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+        notification.style.zIndex = '1000';
+        notification.style.borderLeft = '4px solid var(--primary-green)';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.remove();
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>

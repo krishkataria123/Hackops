@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Club Details</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    body {
+      background-color: white;
+      color: black;
+      line-height: 1.6;
+    }
+    
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1, h2, h3 {
+      color: #5DBB63;
+    }
+    
+    .dark-mode .about {
+      background-color: #1e1e1e;
+    }
+    
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #5DBB63;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(30px);
+    }
+    
+    .toggle-label {
+      margin-right: 10px;
+      line-height: 30px;
+    }
+    
+    /* Club Logo Section */
+    .club-logo-section {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    
+    .club-logo {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #5DBB63;
+    }
+    
+    /* Event Banner */
+    .event-banner {
+      position: relative;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .event-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .event-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .event-title h1 {
+      color: white;
+      font-size: 3rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* About Section */
+    .about {
+      background-color: #f9f9f9;
+      padding: 30px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .about h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 2rem;
+    }
+    
+    .about p {
+      text-align: justify;
+      font-size: 1.1rem;
+    }
+    
+    /* Gallery Section */
+    .gallery {
+      margin-bottom: 40px;
+    }
+    
+    .gallery h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+    
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .image-grid img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    
+    .image-grid img:hover {
+      transform: scale(1.03);
+    }
+    
+    /* Contact Section */
+    .contact {
+      background-color: #5DBB63;
+      color: white;
+      padding: 30px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .contact h2 {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+    
+    .contact p {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    
+    /* Social Section */
+    .social {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .social h2 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+    
+    .social a {
+      color: #5DBB63;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin: 0 10px;
+      transition: color 0.3s ease;
+    }
+    
+    .dark-mode .social a {
+      color: #7dd184;
+    }
+    
+    .social a:hover {
+      color: #4a9e50;
+      text-decoration: underline;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .event-title h1 {
+        font-size: 2rem;
+      }
+      
+      .image-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .club-logo {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Dark Mode Toggle -->
+    <div class="toggle-container">
+      <span class="toggle-label">Dark Mode</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+    <!-- Top Half: Club Logo Section -->
+    <section class="club-logo-section">
+      <img src="yu1.jpg" alt="Club Logo" class="club-logo" />
+    </section>
+
+    <!-- Bottom Half: Event Banner with Event Name on it -->
+    <header class="event-banner">
+      <img src="yu2.jpeg" alt="Event Banner" class="event-image" />
+      <div class="event-title">
+        <h1>La Fiesta</h1>
+      </div>
+    </header>
+
+    <section class="about">
+      <h2>La Fiesta</h2>
+      <p>
+        La Fiesta is a heartwarming event dedicated to celebrating and
+         uplifting children with disabilities. It's a day filled with joy, laughter, and 
+         connection as we invite these incredible kids to join us for a variety of fun games,
+          engaging activities, and exciting performances. Our team prepares special talent shows 
+          and entertaining acts to make them feel seen, celebrated, and cherished. Thoughtful gifts 
+          and delicious refreshments are also arranged to make the experience even more memorable.
+           La Fiesta is more than just an event—it's a celebration of inclusion, kindness, and shared happiness.
+      </p>
+    </section>
+
+    <section class="gallery">
+      <h2>Gallery</h2>
+      <div class="image-grid">
+        <img src="yu3.jpg" alt="Event 1" />
+        <img src="yu4.jpg" alt="Event 2" />
+        <img src="yu5.jpg" alt="Event 3" />
+        <!-- Add more images as needed -->
+      </div>
+    </section>
+
+    <section class="contact">
+      <h2>Contact</h2>
+      <p>Email: youthunited@club.com</p>
+      <p>Phone: +91 9763677345</p>
+    </section>
+
+    <section class="social">
+      <h2>Follow Us</h2>
+      <a href="https://www.instagram.com/yu.tiet/">Instagram</a> |
+      <a href="https://www.facebook.com/yupatiala/">Facebook</a> 
+    </section>
+  </div>
+
+  <script>
+    // Dark Mode Toggle Functionality
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    
+    // Check for saved user preference, if any
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      darkModeToggle.checked = true;
+    }
+    
+    // Listen for toggle changes
+    darkModeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>

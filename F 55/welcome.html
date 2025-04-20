@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to UNIFESTO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url("background.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #b8ffb0;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: bgShift 20s infinite alternate;
+    }
+    
+    @keyframes bgShift {
+      0% { background-color: rgba(10, 20, 30, 0.9); }
+      50% { background-color: rgba(30, 5, 40, 0.9); }
+      100% { background-color: rgba(5, 30, 20, 0.9); }
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(6px);
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      max-width: 90%;
+      width: 500px;
+    }
+
+    #logo img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin: 10px 0;
+      opacity: 0;
+      animation: fadeIn 1.8s forwards, scaleUp 1.5s ease-in-out;
+      color: #b8ffb0;
+      text-shadow: 0 0 8px #00ff88;
+    }
+
+    h1:hover {
+      color: #ccffd9;
+      transform: scale(1.05) rotate(-1deg);
+      text-shadow: 0 0 15px #aaffaa;
+    }
+
+    .quote {
+      font-size: 1.4em;
+      font-style: italic;
+      margin: 20px 0;
+      color: #e6ffe9;
+      opacity: 0;
+      animation: fadeIn 3s forwards 1.2s;
+      text-shadow: 0 0 8px rgba(180, 255, 180, 0.6);
+    }
+
+    .btn-group {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .role-btn {
+      padding: 12px 32px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #1010104e, #040405);
+      color: #fafff0;
+      box-shadow: 0 4px 20px rgba(72, 71, 70, 0.5);
+      animation: pulse 2s infinite;
+      transition: all 0.4s ease;
+    }
+
+    .role-btn:hover {
+      transform: scale(1.08) rotate(-1deg);
+      background: linear-gradient(135deg, #1010104e, #040405);
+      box-shadow: 0 6px 30px rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleUp {
+      0% { transform: scale(0.8); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2em;
+      }
+
+      .quote {
+        font-size: 1.1em;
+      }
+
+      .role-btn {
+        font-size: 1rem;
+        padding: 10px 24px;
+      }
+    }
+  </style>
+  <script>
+    const quotes = [
+      "The best way to predict the future is to create it.",
+      "Innovation distinguishes between a leader and a follower.",
+      "The only limit to our realization of tomorrow is our doubts of today."
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const quoteElement = document.getElementById('quote');
+      quoteElement.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+    });
+
+    function redirectToStudent() {
+      window.location.href = "student-login.html";
+    }
+
+    function redirectToSociety() {
+      window.location.href = "society-login.html";
+    }
+  </script>
+</head>
+<body>
+  <div class="overlay">
+    <div id="logo">
+      <img src="logo.jpg" alt="Unifesto logo">
+    </div>
+    <h1>Welcome to UNIFESTO</h1>
+    <p class="quote" id="quote"></p>
+
+    <div class="btn-group">
+      <button class="role-btn" onclick="redirectToStudent()">I'm a Student</button>
+      <button class="role-btn" onclick="redirectToSociety()">I'm a Society Member</button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Society Event Feedback</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #5DBB63;
+      --primary-dark: #4ca952;
+      --white: #ffffff;
+      --black: #000000;
+      --light-bg: #f5f5f5;
+      --dark-bg: #121212;
+      --card-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      --card-shadow-dark: 0 6px 15px rgba(0,0,0,0.3);
+      --text-light: #555;
+      --text-dark: #e0e0e0;
+      --input-bg: #f0f0f0;
+      --input-bg-dark: #2d2d2d;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--black);
+      transition: var(--transition);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    body.dark-mode {
+      background-color: var(--dark-bg);
+      color: var(--white);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(93, 187, 99, 0.2);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 300;
+      opacity: 0.9;
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .toggle-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
+      color: var(--white);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      backdrop-filter: blur(5px);
+      z-index: 1;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+
+    .dark-mode .toggle-btn {
+      background: rgba(0,0,0,0.2);
+      color: var(--white);
+    }
+
+    .feedback-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+    }
+
+    .dark-mode .feedback-card {
+      background: #1e1e1e;
+      box-shadow: var(--card-shadow-dark);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .dark-mode label {
+      color: var(--text-dark);
+    }
+
+    input, textarea, select {
+      padding: 0.9rem 1.2rem;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      background: var(--input-bg);
+      color: var(--black);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .dark-mode input,
+    .dark-mode textarea,
+    .dark-mode select {
+      background: var(--input-bg-dark);
+      color: var(--white);
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(93, 187, 99, 0.2);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .rating-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 1.8rem;
+      color: #ddd;
+      cursor: pointer;
+    }
+
+    .rating-stars i {
+      transition: var(--transition);
+    }
+
+    .rating-stars i:hover,
+    .rating-stars i.hovered {
+      color: gold;
+      transform: scale(1.1);
+    }
+
+    .rating-stars i.selected {
+      color: gold;
+    }
+
+    .rating-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: -0.5rem;
+    }
+
+    .dark-mode .rating-labels {
+      color: var(--text-dark);
+    }
+
+    .submit-btn {
+      background-color: var(--primary);
+      color: var(--white);
+      font-weight: 600;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(93, 187, 99, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .success-message {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(93, 187, 99, 0.1);
+      border-radius: 8px;
+      color: var(--primary);
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .dark-mode .success-message {
+      background: rgba(93, 187, 99, 0.2);
+      color: #a0e8af;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .required::after {
+      content: ' *';
+      color: #ff4d4d;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        padding: 2rem 1rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .feedback-card {
+        padding: 1.5rem;
+      }
+      
+      .rating-stars {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 1.5rem 1rem;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .toggle-btn {
+        top: 15px;
+        right: 15px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Event Feedback</h1>
+      <p class="subtitle">Your voice matters — help us improve by sharing your experience!</p>
+      <button class="toggle-btn" onclick="toggleDarkMode()">
+        <i class="fas fa-moon"></i>
+        <span>Dark Mode</span>
+      </button>
+    </header>
+
+    <div class="feedback-card">
+      <form id="feedbackForm">
+        <div class="form-group">
+          <label for="name" class="required">Your Name</label>
+          <input type="text" id="name" placeholder="John Doe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="required">Your Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="event" class="required">Event Attended</label>
+          <select id="event" required>
+            <option value="">-- Select Event --</option>
+            <option>Tech Talk 2025</option>
+            <option>Music Night</option>
+            <option>Art & Expression</option>
+            <option>Sports Fiesta</option>
+            <option>Hackowasp</option>
+            <option>Cultural Fest</option>
+          </select>
+        </div>
+
+        <div class="form-group rating-container">
+          <label class="required">How would you rate the event?</label>
+          <div class="rating-stars" id="ratingStars">
+            <i class="fas fa-star" data-value="1" title="Poor"></i>
+            <i class="fas fa-star" data-value="2" title="Fair"></i>
+            <i class="fas fa-star" data-value="3" title="Good"></i>
+            <i class="fas fa-star" data-value="4" title="Very Good"></i>
+            <i class="fas fa-star" data-value="5" title="Excellent"></i>
+          </div>
+          <div class="rating-labels">
+            <span>Poor</span>
+            <span>Excellent</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="feedback" class="required">Your Feedback</label>
+          <textarea id="feedback" placeholder="Let us know what went well or what can be improved..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i>
+          Submit Feedback
+        </button>
+        
+        <div class="success-message" id="successMessage">
+          <i class="fas fa-check-circle"></i>
+          <span>Thank you! Your feedback has been submitted.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const icon = document.querySelector('.toggle-btn i');
+      const text = document.querySelector('.toggle-btn span');
+      
+      if (document.body.classList.contains('dark-mode')) {
+        icon.className = 'fas fa-sun';
+        text.textContent = 'Light Mode';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        icon.className = 'fas fa-moon';
+        text.textContent = 'Dark Mode';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    // Check for saved theme preference
+    if (localStorage.getItem('theme') === 'dark' || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.toggle-btn i').className = 'fas fa-sun';
+      document.querySelector('.toggle-btn span').textContent = 'Light Mode';
+    }
+
+    // Star Rating Logic
+    const stars = document.querySelectorAll('#ratingStars i');
+    let selectedRating = 0;
+    let hoveredRating = 0;
+
+    stars.forEach(star => {
+      // Click event
+      star.addEventListener('click', () => {
+        selectedRating = parseInt(star.getAttribute('data-value'));
+        updateStars();
+      });
+      
+      // Mouseover event
+      star.addEventListener('mouseover', () => {
+        hoveredRating = parseInt(star.getAttribute('data-value'));
+        updateStars(true);
+      });
+      
+      // Mouseout event
+      star.addEventListener('mouseout', () => {
+        hoveredRating = 0;
+        updateStars();
+      });
+    });
+
+    function updateStars(isHovering = false) {
+      stars.forEach(star => {
+        const value = parseInt(star.getAttribute('data-value'));
+        
+        star.classList.remove('selected', 'hovered');
+        
+        if (!isHovering && value <= selectedRating) {
+          star.classList.add('selected');
+        } else if (isHovering && value <= hoveredRating) {
+          star.classList.add('hovered');
+        }
+      });
+    }
+
+    // Form Validation & Submission
+    const form = document.getElementById('feedbackForm');
+    const successMessage = document.getElementById('successMessage');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validate required fields
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const event = document.getElementById('event').value;
+      const feedback = document.getElementById('feedback').value.trim();
+      
+      if (!name || !email || !event || !feedback) {
+        showError('Please fill in all required fields.');
+        return;
+      }
+      
+      if (!validateEmail(email)) {
+        showError('Please enter a valid email address.');
+        return;
+      }
+      
+      if (selectedRating === 0) {
+        showError('Please rate the event by clicking the stars.');
+        return;
+      }
+
+      // Collect form data
+      const feedbackData = {
+        name,
+        email,
+        event,
+        rating: selectedRating,
+        feedback,
+        timestamp: new Date().toISOString()
+      };
+
+      // In a real app, you would send this to your server
+      console.log('Feedback Submitted:', feedbackData);
+      
+      // Show success message
+      showSuccess();
+      
+      // Reset form
+      form.reset();
+      selectedRating = 0;
+      updateStars();
+    });
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function showError(message) {
+      alert(message); // Replace with a nicer error display in production
+    }
+
+    function showSuccess() {
+      successMessage.style.display = 'flex';
+      
+      // Scroll to success message
+      successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Hide after 5 seconds
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 5000);
+    }
+  </script>
+
+</body>
+</html>

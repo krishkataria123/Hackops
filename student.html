@@ -16,6 +16,7 @@
             --card-shadow: 0 6px 15px rgba(0,0,0,0.1);
             --timeline-line: 4px solid var(--primary-green);
         }
+
         * {
             margin: 0;
             padding: 0;
@@ -34,19 +35,40 @@
             margin: 0 auto;
             padding: 2rem;
         }
-        header {
-    padding-top: 100px; /* This is the new line */
-    text-align: center;
-    margin-bottom: 3rem;
-    position: relative;
-    overflow: hidden;
-    padding: 2rem 1rem;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
-    color: var(--white);
-    box-shadow: 0 10px 20px rgba(93, 187, 99, 0.2);
-    animation: headerEntrance 1s ease-out;
+        /* Glow Effect */
+.glow-effect {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(93, 187, 99, 0.15) 0%, rgba(93, 187, 99, 0) 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: glowMove 12s infinite alternate;
 }
+
+.glow-effect:nth-child(2) {
+    animation-delay: -4s;
+}
+
+@keyframes glowMove {
+    0% { transform: translate(-50%, -50%); }
+    25% { transform: translate(50%, -30%); }
+    50% { transform: translate(20%, 40%); }
+    75% { transform: translate(-40%, 20%); }
+    100% { transform: translate(-10%, -30%); }
+}
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 1rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green));
+            color: var(--white);
+            box-shadow: 0 10px 20px rgba(93, 187, 99, 0.2);
+            animation: headerEntrance 1s ease-out;
+        }
 
         @keyframes headerEntrance {
             0% {
@@ -60,20 +82,10 @@
         }
 
         .header-content {
-    position: relative;
-    z-index: 2;
-    padding-top: 40px; /* Add some padding to prevent overlap */
-}
-.header-buttons-wrapper {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  z-index: 10;
-}
+            position: relative;
+            z-index: 2;
+        }
+
         .header-bg-pattern {
             position: absolute;
             top: 0;
@@ -885,7 +897,16 @@
     color: var(--primary-green);
 }
 /* Container for both buttons */
-
+.header-buttons-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 10;
+}
 
 /* Added Events Button */
 .added-events-btn {
@@ -968,575 +989,466 @@
 [data-theme="dark"] .liked-events-btn:hover {
   background: rgba(0, 0, 0, 0.3);
 }
-/* Add this to your existing CSS */
-.event-actions {
+/* Modern Notification System */
+.login-notification {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, var(--primary-green), #4CAF50);
+    color: white;
+    padding: 1.2rem 1.8rem 1.4rem;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(93, 187, 99, 0.25);
+    z-index: 1000;
+    transform: translateX(calc(100% + 50px));
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+    max-width: 350px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.login-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-icon {
+    font-size: 1.8rem;
+    color: white;
+    flex-shrink: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+}
+
+.notification-message {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+.notification-progress {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 4;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.event-menu-btn {
-    background: none;
-    border: none;
+.notification-progress-bar {
+    height: 100%;
+    width: 100%;
+    background: white;
+    transform-origin: left;
+    animation: progressBar 2s linear forwards;
+    border-radius: 0 3px 3px 0;
+}
+
+/* Animation for progress bar */
+@keyframes progressBar {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+/* Glow effect for notification */
+@keyframes notificationGlow {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    50% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.login-notification.show {
+    animation: notificationGlow 2s ease-out;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .login-notification {
+    background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+    border: 1px solid var(--primary-green);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .notification-progress-bar {
+    background: var(--primary-green);
+}
+
+/* Light mode glow animation */
+@keyframes notificationGlowLight {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    50% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* Dark mode glow animation */
+@keyframes notificationGlowDark {
+    0% { box-shadow: 0 0 0 0 rgba(93, 187, 99, 0.6); }
+    50% { box-shadow: 0 0 0 15px rgba(93, 187, 99, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(93, 187, 99, 0); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .login-notification {
+        top: 20px;
+        right: 20px;
+        left: 20px;
+        max-width: calc(100% - 40px);
+        transform: translateY(-100px);
+    }
+    
+    .login-notification.show {
+        transform: translateY(0);
+    }
+}
+/* Multi-College Sponsor Styles */
+.multi-college-sponsors {
+    background: linear-gradient(135deg, rgba(93, 187, 99, 0.05), rgba(255, 255, 255, 0.1));
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin: 3rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(93, 187, 99, 0.15);
+}
+
+[data-theme="dark"] .multi-college-sponsors {
+    background: linear-gradient(135deg, rgba(93, 187, 99, 0.05), rgba(30, 30, 30, 0.3));
+    border-color: rgba(93, 187, 99, 0.3);
+}
+
+.sponsor-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.sponsor-header h2 {
+    font-size: 2rem;
+    color: var(--primary-green);
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+.sponsor-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--primary-green);
+    border-radius: 3px;
+}
+
+.sponsor-header p {
     color: #666;
-    cursor: pointer;
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    transition: all 0.3s ease;
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
 }
 
-[data-theme="dark"] .event-menu-btn {
+[data-theme="dark"] .sponsor-header p {
     color: #b0b0b0;
 }
 
-.event-menu-btn:hover {
-    color: var(--primary-green);
-    transform: scale(1.1);
-}
-
-.event-dropdown {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background: var(--white);
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    min-width: 150px;
-    overflow: hidden;
-    z-index: 10;
-    display: none;
-    animation: fadeIn 0.2s ease-out;
-}
-
-[data-theme="dark"] .event-dropdown {
-    background: #2a2a2a;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.event-dropdown.show {
-    display: block;
-}
-
-.event-dropdown-item {
-    padding: 0.8rem 1rem;
+/* College Tabs */
+.college-tabs {
     display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.9rem;
-    color: var(--black);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-[data-theme="dark"] .event-dropdown-item {
-    color: #e0e0e0;
-}
-
-.event-dropdown-item:hover {
-    background: rgba(93, 187, 99, 0.1);
-    color: var(--primary-green);
-}
-
-.event-dropdown-item i {
-    width: 20px;
-    text-align: center;
-}
-/* Three-dot Menu Styles */
-.global-actions {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-}
-
-.global-menu-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-}
-
-.global-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    min-width: 180px;
-    display: none;
-    padding: 10px 0;
-}
-
-.global-dropdown.show {
-    display: block;
-}
-
-.global-menu-item {
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #333;
-    text-decoration: none;
-}
-
-.global-menu-item:hover {
-    background: #f5f5f5;
-}
-
-/* Dark Mode Support */
-[data-theme="dark"] .global-dropdown {
-    background: #2a2a2a;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] .global-menu-item {
-    color: #e0e0e0;
-}
-
-[data-theme="dark"] .global-menu-item:hover {
-    background: #333;
-}
-.dot-navigation {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    z-index: 100;
-}
-.global-horizontal-nav {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    z-index: 1000;
-    align-items: flex-start;
-}
-
-.dot-row {
-    display: flex;
-    gap: 20px;
     justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
-.dot {
-    font-size: 32px;
-    color: white;
-    text-decoration: none;
-    line-height: 1;
-    transition: all 0.3s;
-}
-
-.dot:hover {
-    color: var(--primary-green);
-    transform: scale(1.2);
-}
-
-.label-row {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 5px;
-}
-
-.label-row span {
-    color: white;
-    font-size: 12px;
-    opacity: 0.7;
-}
-
-/* Dark mode support */
-[data-theme="dark"] .dot {
-    color: #eeeeee;
-}
-.dot-nav {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 30px;
-    z-index: 100;
-} 
-
-.dot {
-    color: rgba(255,255,255,0.7);
-    font-size: 2.5rem;
-    line-height: 1;
-    text-decoration: none;
-    transition: all 0.3s;
-    cursor: pointer;
-}
-
-/* Active dot styling */
-.dot.active {
-    color: var(--black);
-    transform: scale(1.3);
-    pointer-events: none; /* Disable clicks on active dot */
-}
-
-/* Hover effects */
-.dot:not(.active):hover {
-    color: var(--black);
-    transform: scale(1.5);
-}
-
-/* Dark mode support */
-[data-theme="dark"] .dot:not(.active) {
-    color: rgba(255,255,255,0.5);
-}
-
-.global-dot-nav {
- top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-        gap: 30px;
-    z-index: 1000; /* Ensures it stays above everything */
-}.flatpickr-calendar {
-    background: var(--white);
-    box-shadow: var(--card-shadow);
-    border-radius: 12px;
-    border: none;
-}
-
-.flatpickr-day {
-    color: var(--black);
-    border-radius: 50%;
-}
-
-.flatpickr-day:hover {
-    background: rgba(93, 187, 99, 0.1);
-    border-color: transparent;
-}
-
-.flatpickr-day.selected {
-    background: var(--primary-green);
-    border-color: var(--primary-green);
-}
-.flatpickr-prev-month:hover, 
-.flatpickr-next-month:hover {
-    color: var(--primary-green);
-}
-
-.flatpickr-prev-month svg, 
-.flatpickr-next-month svg {
-    fill: white;
-}
-.flatpickr-day.today {
-    border-color: var(--primary-green);
-    font-weight: bold;
-}
-
-.flatpickr-day.today:hover {
-    background: var(--primary-green);
-    color: white;
-}
-.flatpickr-day.weekend {
-    color: #343835; /* Red tint for weekends */
-}
-.flatpickr-input {
-    background: rgba(255,255,255,0.9) !important;
-    border: none !important;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-.flatpickr-calendar.open {
-    animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-/* Style the month/year dropdown toggle */
-.flatpickr-current-month .flatpickr-monthDropdown-months,
-.flatpickr-current-month input.cur-year {
+.college-tab {
+    padding: 0.8rem 1.5rem;
     background: rgba(93, 187, 99, 0.1);
     border: none;
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    color: var(--primary-green);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.flatpickr-current-month .flatpickr-monthDropdown-months:hover,
-.flatpickr-current-month input.cur-year:hover {
-    background: rgba(151, 177, 153, 0.2);
-}
-/* Add today/clear buttons */
-.flatpickr-calendar:after {
-    content: '';
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-}
-
-.flatpickr-today-button,
-.flatpickr-clear-button {
-    background: var(--primary-green);
-    color: white;
-    border: none;
-    padding: 8px 16px;
     border-radius: 50px;
-    margin: 0 5px;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(93, 187, 99, 0.3);
-}
-
-.flatpickr-today-button:hover,
-.flatpickr-clear-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(93, 187, 99, 0.4);
-}
-
-.flatpickr-clear-button {
-    background: #f8f9fa;
-    color: #666;
-}
-
-.flatpickr-clear-button:hover {
-    background: #3b4148;
-}
-.flatpickr-day {
-    transition: all 0.2s ease;
-    transform: scale(1);
-}
-
-.flatpickr-day:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 1px var(--primary-green);
-}
-
-.flatpickr-day.selected {
-    animation: pulse 0.5s ease;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-/* Weekday header styling */
-.flatpickr-weekdays {
-    background: rgba(93, 187, 99, 0.15); /* Light green background */
-    padding: 8px 0;
-    margin-bottom: 4px;
-}
-
-.flatpickr-weekday {
     color: var(--primary-green);
     font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-/* Hover states */
-.flatpickr-day:not(.disabled):hover {
-    background: rgba(93, 187, 99, 0.2);
-    color: var(--black);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-[data-theme="dark"] .flatpickr-day:not(.disabled):hover {
+.college-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: var(--primary-green);
+    transition: all 0.3s ease;
+}
+
+.college-tab.active {
+    background: var(--primary-green);
     color: white;
 }
-/* ================== */
-/* CALENDER ENHANCEMENTS */
-/* ================== */
-/* Replace existing .flatpickr-calendar rule */
-.flatpickr-calendar {
-  width: 380px; /* Increased from 320px */
-  padding: 20px; /* More padding */
-  border-radius: 14px; /* Slightly larger radius */
-  box-shadow: 0 12px 30px rgba(0,0,0,0.15); /* Deeper shadow */
-  font-family: 'Poppins', sans-serif;
-  animation: fadeIn 0.3s ease-out;
-  margin: 0 auto; /* Center the calendar */
+
+.college-tab.active::after {
+    width: 50%;
 }
 
-
-.flatpickr-month {
-  height: 60px; /* Taller header */
-  margin-bottom: 15px;
+.college-tab:not(.active):hover {
+    background: rgba(93, 187, 99, 0.2);
 }
 
-
-.flatpickr-weekdays {
-  height: 45px; /* More height */
-  font-size: 13px; /* Slightly larger */
-}
-.flatpickr-weekday {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--primary-green);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.college-tab:not(.active):hover::after {
+    width: 30%;
 }
 
-/* Day cell sizing */
-/* Day cell sizing */
-.flatpickr-day {
-  height: 42px; /* Increased from 36px */
-  line-height: 42px;
-  margin: 3px; /* Slightly more spacing */
-  font-size: 15px; /* Slightly larger text */
-  font-weight: 500;
-  border-radius: 10px; /* More rounded */
+/* Sponsor Container */
+.sponsor-container {
+    min-height: 400px;
+    position: relative;
 }
 
-.flatpickr-day.inRange {
-  background: rgba(93, 187, 99, 0.1);
+.college-sponsors {
+    display: none;
+    animation: fadeIn 0.5s ease;
 }
 
-.flatpickr-day.today {
-  border: 2px solid var(--primary-green);
-  font-weight: 600;
-}
-
-.flatpickr-day.selected {
-  background: var(--primary-green);
-  color: white;
-  font-weight: 600;
-  transform: scale(1.05);
-}
-
-.flatpickr-day.weekend {
-  color: #ff6b6b;
-  font-weight: 600;
-}
-
-.flatpickr-day.prevMonthDay, 
-.flatpickr-day.nextMonthDay {
-  color: rgba(0,0,0,0.25);
-  font-weight: 400;
-}
-
-.flatpickr-prev-month, 
-.flatpickr-next-month {
-  width: 40px; /* Larger buttons */
-  height: 40px;
-  padding: 10px;
-  top: 10px;
-}
-
-
-.flatpickr-current-month {
-  font-size: 115%;
-  padding-top: 5px;
-}
-
-.flatpickr-monthDropdown-months, 
-.flatpickr-current-month input.cur-year {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--primary-green);
-}
-
-[data-theme="dark"] .flatpickr-calendar {
-  background: #2a2a2a;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-[data-theme="dark"] .flatpickr-day {
-  color: #e0e0e0;
-}
-
-[data-theme="dark"] .flatpickr-day.prevMonthDay,
-[data-theme="dark"] .flatpickr-day.nextMonthDay {
-  color: rgba(255,255,255,0.25);
-}
-
-.flatpickr-day:not(.flatpickr-disabled):hover {
-  background: rgba(93, 187, 99, 0.2);
-  transform: scale(1.05);
-}
-
-.flatpickr-prev-month:hover, 
-.flatpickr-next-month:hover {
-  background: rgba(93, 187, 99, 0.2);
+.college-sponsors.active {
+    display: block;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
-/* Horizontal dash navigation */
-/* Horizontal dash navigation - Left-aligned version */
 
-.global-horizontal-nav {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+/* Sponsor Tiers */
+.sponsor-tier {
+    margin-bottom: 2.5rem;
+}
+
+.sponsor-tier h3 {
     display: flex;
-    flex-direction: column;
-    gap: 0px;
-    z-index: 1000;
-    align-items: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    color: var(--black);
 }
 
-.dash {
-    color: rgba(255,255,255,0.7);
-    font-size: 1.75rem;
-    line-height: 0.5;
-    text-decoration: none;
-    transition: all 0.3s;
-    cursor: pointer;
-    width: auto; /* Changed from fixed width */
-    min-width: 30px; /* Minimum dash length */
-    text-align: left; /* Align text to left */
-    letter-spacing: 0;
+[data-theme="dark"] .sponsor-tier h3 {
+    color: #e0e0e0;
+}
+
+.gold-icon {
+    color: gold;
+}
+
+.silver-icon {
+    color: silver;
+}
+
+.bronze-icon {
+    color: #cd7f32; /* bronze color */
+}
+
+/* Sponsor Grid */
+.sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Sponsor Card */
+.sponsor-card {
+    background: var(--white);
+    border-radius: 12px;
     overflow: hidden;
-    padding: 2px 5px; /* Added horizontal padding */
-    display: block;
-    margin: 0;
-    margin-bottom: -10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(93, 187, 99, 0.1);
 }
 
-/* Active state with increased length */
-.dash.active {
+[data-theme="dark"] .sponsor-card {
+    background: #2a2a2a;
+    border-color: rgba(93, 187, 99, 0.3);
+}
+
+.sponsor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(93, 187, 99, 0.15);
+}
+
+.sponsor-logo-container {
+    position: relative;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(93, 187, 99, 0.03);
+    border-bottom: 1px solid rgba(93, 187, 99, 0.1);
+}
+
+[data-theme="dark"] .sponsor-logo-container {
+    background: rgba(93, 187, 99, 0.05);
+}
+
+.college-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--primary-green);
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.sponsor-logo-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(20%);
+    transition: filter 0.3s ease;
+}
+
+.sponsor-card:hover .sponsor-logo-container img {
+    filter: grayscale(0%);
+}
+
+.sponsor-details {
+    padding: 1.5rem;
+}
+
+.sponsor-details h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
     color: var(--black);
-    transform: scaleX(1.3);
-    min-width: 35px; /* Longer when active */
-    pointer-events: none;
 }
 
-/* Hover state */
-.dash:not(.active):hover {
-    color: var(--black);
-    min-width: 35px; /* Longer when hovered */
-    transform: none; /* Changed from scaleX */
+[data-theme="dark"] .sponsor-details h4 {
+    color: #e0e0e0;
 }
 
-/* Dark mode */
-[data-theme="dark"] .dash:not(.active) {
-    color: rgba(255,255,255,0.5);
+.sponsor-details p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+[data-theme="dark"] .sponsor-details p {
+    color: #b0b0b0;
+}
+
+.sponsor-links {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.sponsor-links a {
+    color: var(--primary-green);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.sponsor-links a:hover {
+    transform: scale(1.2);
+    color: var(--primary-dark);
+}
+
+/* Become Sponsor Section */
+.become-sponsor {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(93, 187, 99, 0.2);
+}
+
+.become-sponsor h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-green);
+}
+
+.become-sponsor p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+[data-theme="dark"] .become-sponsor p {
+    color: #b0b0b0;
+}
+
+.sponsor-cta {
+    background: linear-gradient(to right, var(--primary-green), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(93, 187, 99, 0.3);
+}
+
+.sponsor-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(93, 187, 99, 0.4);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sponsor-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .college-tabs {
+        gap: 0.5rem;
+    }
+    
+    .college-tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .sponsor-grid {
+        grid-template-columns: 1fr;
+    }
 }
     </style>
 </head>
 <body>
-  
-    <div class="container">
-        <div class="global-horizontal-nav">
-            <a href="index.html" class="dash active">—</a>
-            <a href="events.html" class="dash">—</a>
-            <a href="profile.html" class="dash">—</a>
+    <div class="glow-effect"></div>
+<div class="glow-effect" style="animation-delay: -4s;"></div>
+    <div class="login-notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span>Welcome back</span>
+            <div class="notification-timer"></div>
         </div>
-    
+    </div>
+    <div class="container">
         <header>
             <div class="header-bg-pattern"></div>
             <div class="header-content">
@@ -1544,8 +1456,10 @@
                     <i class="fas fa-moon"></i>
                     <span>Dark Mode</span>
                 </button>
-               
-                 
+                <div class="logo-container">
+                    
+                    <h1>College Societies Timeline</h1>
+                </div>
                 
                 <p class="subtitle">Discover and join exciting events across campus</p>
                 <a href="added-events.html" class="added-events-btn">
@@ -1577,13 +1491,84 @@
                 </div>
                 
                 <div class="date-selector">
-                    <div class="calendar-show">
-                        <div id="datePicker"></div>
+                    <div class="calendar-input">
+                        <input type="text" id="datePicker" placeholder="Select a date">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
                 </div>
                 
             </div>
         </header>
+        <!-- Add this section where you want sponsors to appear -->
+<section class="multi-college-sponsors">
+    <div class="sponsor-header">
+        <h2>Our Partners Across Campuses</h2>
+        <p>Collaborating with leading college societies nationwide to bring you exceptional events</p>
+    </div>
+
+    <div class="college-tabs">
+        <button class="college-tab active" data-college="thapar">Thapar University</button>
+        <button class="college-tab" data-college="vit">VIT University</button>
+        <button class="college-tab" data-college="iit">IIT Delhi</button>
+        <button class="college-tab" data-college="bits">BITS Pilani</button>
+    </div>
+
+    <div class="sponsor-container">
+        <!-- Thapar University Sponsors -->
+        <div class="college-sponsors active" id="thapar-sponsors">
+            <div class="sponsor-tier">
+                <h3><i class="fas fa-crown gold-icon"></i> Platinum Partners</h3>
+                <div class="sponsor-grid">
+                    <div class="sponsor-card">
+                        <div class="sponsor-logo-container">
+                            <img src="https://via.placeholder.com/180x100?text=Thapar+Tech" alt="Thapar Tech Society">
+                            <span class="college-badge">Thapar</span>
+                        </div>
+                        <div class="sponsor-details">
+                            <h4>Thapar Tech Society</h4>
+                            <p>Supporting our hackathons and tech workshops</p>
+                            <div class="sponsor-links">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More Thapar sponsors... -->
+                </div>
+            </div>
+            
+            <div class="sponsor-tier">
+                <h3><i class="fas fa-medal silver-icon"></i> Gold Partners</h3>
+                <div class="sponsor-grid">
+                    <!-- Gold sponsors... -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VIT University Sponsors -->
+        <div class="college-sponsors" id="vit-sponsors">
+            <!-- VIT sponsor content... -->
+            <div class="sponsor-card">
+                <div class="sponsor-logo-container">
+                    <img src="https://via.placeholder.com/180x100?text=VIT+Tech" alt="VIT Tech Society">
+                    <span class="college-badge">VIT</span>
+                </div>
+                <div class="sponsor-details">
+                    <h4>VIT Tech Society</h4>
+                    <p>Supporting our hackathons and tech workshops</p>
+                    <div class="sponsor-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add other colleges similarly -->
+    </div>
+
+    
+</section>
 
         <!-- Day View Timeline -->
         <div class="timeline" id="dayView">
@@ -1598,27 +1583,25 @@
                             <div class="society-icon">
                                 <i class="fas fa-robot"></i>
                             </div>
-                            Owasp
+                            MLSC
                         </div>
                         <span class="event-time">9:00 AM - 11:00 AM</span>
-                      
                     </div>
-                    <h3 class="event-title">Hackowasp</h3>
+                    <h3 class="event-title">Hackspire</h3>
                     
                     <span class="event-category">Technology</span>
                     <p class="event-description">Learn the fundamentals of artificial intelligence and machine learning with hands-on projects. Perfect for beginners! No prior experience required.</p>
                     <div class="event-footer">
                         <div class="event-location">
                             <i class="fas fa-map-marker-alt"></i>
-                            Tech Building, Room 205
+                            LP-108, Thapar
                         </div>
-                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                        <div class="event-timer" data-event-time="2025-04-28 12:00:00">
                             <i class="fas fa-clock"></i>
                             <span class="timer-days">00</span>d 
                             <span class="timer-hours">00</span>h 
                             <span class="timer-minutes">00</span>m 
                             <span class="timer-seconds">00</span>s&nbsp;
-                    
                         </div>
                         
                         <button class="register-btn" data-href="event-details.html" data-event="ai-workshop"><span>Register</span></button>
@@ -1643,8 +1626,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                             Arts Center, Studio 3
                         </div>
-                
-                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                        <div class="event-timer" data-event-time="2025-04-28 12:00:00">
                             <i class="fas fa-clock"></i>
                             <span class="timer-days">00</span>d 
                             <span class="timer-hours">00</span>h 
@@ -1668,8 +1650,6 @@
                             Culinary Club
                         </div>
                         <span class="event-time">1:00 PM - 3:00 PM</span>
-                      
-                      
                     </div>
                     <h3 class="event-title">Italian Cooking Class</h3>
                     <span class="event-category">Social</span>
@@ -1679,35 +1659,12 @@
                             <i class="fas fa-map-marker-alt"></i>
                             Campus Kitchen
                         </div>
-                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                        <div class="event-timer" data-event-time="2025-04-28 12:00:00">
                             <i class="fas fa-clock"></i>
                             <span class="timer-days">00</span>d 
                             <span class="timer-hours">00</span>h 
                             <span class="timer-minutes">00</span>m 
                             <span class="timer-seconds">00</span>s
-                            <div class="event-actions">
-                                <button class="event-menu-btn">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="event-dropdown">
-                                    <div class="event-dropdown-item" data-action="edit">
-                                        <i class="fas fa-edit"></i>
-                                        <span>Edit</span>
-                                    </div>
-                                    <div class="event-dropdown-item" data-action="share">
-                                        <i class="fas fa-share-alt"></i>
-                                        <span>Share</span>
-                                    </div>
-                                    <div class="event-dropdown-item" data-action="save">
-                                        <i class="fas fa-bookmark"></i>
-                                        <span>Save</span>
-                                    </div>
-                                    <div class="event-dropdown-item" data-action="report">
-                                        <i class="fas fa-flag"></i>
-                                        <span>Report</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <button class="register-btn" data-event="cooking"><span>Register</span></button>
                     </div>
@@ -1731,7 +1688,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                             Main Gymnasium
                         </div>
-                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                        <div class="event-timer" data-event-time="2025-04-28 12:00:00">
                             <i class="fas fa-clock"></i>
                             <span class="timer-days">00</span>d 
                             <span class="timer-hours">00</span>h 
@@ -1755,9 +1712,8 @@
                             Debate Club
                         </div>
                         <span class="event-time">5:00 PM - 7:00 PM</span>
-                       
                     </div>
-                    <h3 class="event-title">Open ebate Night</h3>
+                    <h3 class="event-title">Open Debate Night</h3>
                     <span class="event-category">Academic</span>
                     <p class="event-description">Topic: "Social media has done more harm than good to society." All perspectives welcome! Come to debate or just listen.</p>
                     <div class="event-footer">
@@ -1765,7 +1721,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                             Student Union, Room 101
                         </div>
-                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                        <div class="event-timer" data-event-time="2025-04-28 12:00:00">
                             <i class="fas fa-clock"></i>
                             <span class="timer-days">00</span>d 
                             <span class="timer-hours">00</span>h 
@@ -1785,7 +1741,6 @@
                             Music Society
                         </div>
                         <span class="event-time">7:30 PM - 9:30 PM</span>
-                        
                     </div>
                     <h3 class="event-title">Acoustic Night</h3>
                     <span class="event-category">Arts & Culture</span>
@@ -1795,7 +1750,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                             Quad Amphitheater
                         </div>
-                        <div class="event-timer" data-event-time="2025-04-22 12:00:00">
+                        <div class="event-timer" data-event-time="2025-04-28 12:00:00">
                             <i class="fas fa-clock"></i>
                             <span class="timer-days">00</span>d 
                             <span class="timer-hours">00</span>h 
@@ -1852,6 +1807,85 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+        // College Tab Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.college-tab');
+    const sponsorContainers = document.querySelectorAll('.college-sponsors');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Get college identifier
+            const college = this.dataset.college;
+            
+            // Hide all sponsor containers
+            sponsorContainers.forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Show selected college's sponsors
+            document.getElementById(`${college}-sponsors`).classList.add('active');
+        });
+    });
+    
+    // Sponsor CTA button
+    const sponsorCTA = document.querySelector('.sponsor-cta');
+    if (sponsorCTA) {
+        sponsorCTA.addEventListener('click', function() {
+            // Replace with your actual sponsor contact page
+            window.location.href = "sponsor-form.html";
+        });
+    }
+});
+        // Create notification element
+const notification = document.createElement('div');
+notification.className = 'login-notification';
+notification.innerHTML = `
+    <div class="notification-icon">
+        <i class="fas fa-check-circle"></i>
+    </div>
+    <div class="notification-content">
+        <div class="notification-title">Success</div>
+        <div class="notification-message">Welcome back !</div>
+    </div>
+    <div class="notification-progress">
+        <div class="notification-progress-bar"></div>
+    </div>
+`;
+
+// Add to body
+document.body.appendChild(notification);
+
+// Show notification with enhanced effects
+setTimeout(() => {
+    notification.classList.add('show');
+    
+    // Hide after 1s (matches progress bar duration)
+    setTimeout(() => {
+        notification.style.transition = 'all 2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(-30px)';
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 2000);
+}, 300);
+
+// Optional: Add sound effect (remove if not needed)
+function playNotificationSound() {
+    const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...');
+    audio.volume = 0.3;
+    audio.play().catch(e => console.log('Audio play failed:', e));
+}
+
+// Uncomment to enable sound:
+// playNotificationSound();
         // Liked Events Functionality
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize liked events from localStorage
@@ -1947,25 +1981,21 @@ function updateThemeButton(theme) {
         themeText.textContent = 'Dark Mode';
     }
 }
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize calendar
-    flatpickr("#datePicker", {
-        inline: true,
-        static: true,
-        defaultDate: "today",
-        dateFormat: "Y-m-d",
-        onReady: function() {
-            this.calendarContainer.classList.add("open");
-            console.log("Calendar initialized"); // Debug log
-        }
-    });
+        // Initialize date picker
+        flatpickr("#datePicker", {
+            dateFormat: "Y-m-d",
+            defaultDate: "today",
+            onChange: function(selectedDates, dateStr, instance) {
+                // Handle date change
+                console.log("Selected date:", dateStr);
+            }
+        });
 
-    // Force show all event cards for testing
-    document.querySelectorAll('.event-card').forEach(card => {
-        card.classList.add('visible');
-        console.log("Showing card:", card.querySelector('.event-title')?.textContent);
-    });
-});
+        // Make calendar open when clicking on the input
+        document.querySelector('.calendar-input').addEventListener('click', function() {
+            document.getElementById('datePicker')._flatpickr.open();
+        });
+
         // Event modal functionality
 const registerButtons = document.querySelectorAll('.register-btn');
 const modal = document.getElementById('eventModal');
@@ -2057,70 +2087,6 @@ registerButtons.forEach(button => {
         document.querySelectorAll('.event-card').forEach(card => {
             observer.observe(card);
         });
-        // Add this to your existing JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle three-dot menu click
-    document.querySelectorAll('.event-menu-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const dropdown = this.nextElementSibling;
-            
-            // Close all other open dropdowns
-            document.querySelectorAll('.event-dropdown.show').forEach(d => {
-                if (d !== dropdown) d.classList.remove('show');
-            });
-            
-            dropdown.classList.toggle('show');
-        });
-    });
-    
-    // Handle dropdown item clicks
-    document.querySelectorAll('.event-dropdown-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const action = this.dataset.action;
-            const eventCard = this.closest('.event-card');
-            const eventTitle = eventCard.querySelector('.event-title').textContent;
-            
-            switch(action) {
-                case 'edit':
-                    alert(`Edit "${eventTitle}"`);
-                    // Here you would implement your edit functionality
-                    break;
-                case 'share':
-                    alert(`Share "${eventTitle}"`);
-                    // Implement share functionality
-                    break;
-                case 'save':
-                    alert(`Saved "${eventTitle}"`);
-                    // Implement save functionality
-                    break;
-                case 'report':
-                    alert(`Reported "${eventTitle}"`);
-                    // Implement report functionality
-                    break;
-            }
-            
-            // Close the dropdown
-            this.closest('.event-dropdown').classList.remove('show');
-        });
-    });
-    
-    // Close dropdowns when clicking elsewhere
-    document.addEventListener('click', function() {
-        document.querySelectorAll('.event-dropdown.show').forEach(dropdown => {
-            dropdown.classList.remove('show');
-        });
-    });
-});
-// 
-document.addEventListener('DOMContentLoaded', function() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.dot').forEach(dot => {
-        if (dot.getAttribute('href') === currentPage) {
-            dot.classList.add('active');
-        }
-    });
-});
-
+        
     </script>
 </body>
